@@ -38,6 +38,38 @@
     width: 186px;
 }
 
+.dropdown-container {
+    position: relative;
+}
+
+.dropdown {
+    position: absolute;
+    top: 45px;
+    left: 0px;
+}
+
+.top .dropdown .button {
+    border: 1px solid #34343488;
+    margin-top: 0px;
+    padding: 5px;
+    width: 160px;
+    border-radius: 0;
+    background-color: white;
+}
+
+.dropdown.hidden {
+    opacity: 0;
+    transform : translateY(-300px);
+    height: 0;
+    transition: opacity 300ms, transform 300ms, height 300ms;
+}
+
+.dropdown.active {
+    opacity: 1;
+    transform : translateY(0px);
+    height: 100%;
+    transition: opacity 300ms, transform 300ms, height 300ms;
+}
 
 
 .main .exit {
@@ -158,13 +190,22 @@
 
 .top .button:hover {
     text-decoration: underline;
-    background-color: transparent;
+    background-color: white;
 }
 
 .main {
     max-width: 120px;
     min-width: 600px;
     margin: auto;
+}
+
+.blinder {
+    position: fixed;
+    left: 0;
+    top : 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: #fff0;
 }
 
 .message {

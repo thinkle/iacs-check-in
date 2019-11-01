@@ -5,6 +5,18 @@ import './App.css';
 import Checkin from './checkin.js';
 import Checkout from './checkout.js';
 import PrintScreen from './print.js';
+import UserList from './UserList.js';
+import Google from './gapiLoader.js';
+
+import {Dropdown} from './widgets.js';
+
+
+function Reprint (props) {
+    return <div>
+             <h2>Select Pass to Reprint</h2>
+             <UserList {...props}/>
+           </div>
+}
 
 function CompleteScreen (props) {
     return (
@@ -96,7 +108,6 @@ function App(props) {
             );
     }
 
-
     function handlePrintingComplete () {
         setCompleteScreenProps({
             title : `Checked In ${checkingInUser.name}`,
@@ -116,6 +127,10 @@ function App(props) {
         );
     }
 
+    function reprint (user) {
+        setCheckingInUser(user);
+        setMode('print');
+    }
 
     return (
         <div className="App">
@@ -123,11 +138,44 @@ function App(props) {
             <div className="top">
               <img src={logo} className="App-logo" alt="logo" />
               <div className="brand">Check In</div>
-              {mode && chooser() || <div className="centeringPlaceholder"/>}
+              {mode && chooser()}
+              <div className="centeringPlaceholder">
+                <Dropdown>
+                  <div className='buttonMenu'>
+                    <button
+                      className='button'
+                      onClick={()=>setMode('list')}
+                    >
+                      List visitors
+                    </button>
+                    <button
+                      className='button'
+                      onClick={()=>setMode('google')}
+                    >
+                      Set up google link
+                    </button>
+                    <button
+                      className='button'
+                      onClick={()=>setMode('reprint')}
+                    >
+                      Re-print pass
+                    </button>
+
+                  </div>
+                </Dropdown>
+              </div>
             </div>
           </div>
           <div className="main">
             {!mode && chooser ()
+             ||mode=='list' &&
+             <UserList users={checkedIn}/>
+             ||mode=='google' &&
+             <Google/>
+             ||mode=='reprint' &&
+             <Reprint users={checkedIn}
+                      onSelected={reprint}
+             />
              ||mode=='checkin' &&
              <Checkin onCheckIn={handleCheckIn}/>
              ||mode=='checkout' &&

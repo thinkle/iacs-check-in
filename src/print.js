@@ -2,6 +2,14 @@ import React from 'react';
 import './print.css';
 
 function PrintScreen (props) {
+    
+    var timestamp = props.user.timestamp;
+    if (!timestamp) {
+        throw 'No timestamp!';
+    }
+    if (typeof timestamp == 'string') {
+        timestamp = new Date(timestamp);
+    }
 
     return (
         props.user &&
@@ -9,17 +17,17 @@ function PrintScreen (props) {
       <div className='print'>
         <div className='badge'>
           <div className='left'>
-            <div className='date'>{props.user.timestamp.toLocaleDateString()}</div>
+            <div className='date'>{timestamp.toLocaleDateString()}</div>
           </div>
           <div className='center'>
             <div className='role'>{props.user.role}</div>
             <div className='name'>{props.user.name}</div>
             <div className='purpose'>{props.user.purpose}</div>
-            <div className='time'>{props.user.timestamp.toLocaleTimeString()}</div>
+            <div className='time'>{timestamp.toLocaleTimeString()}</div>
           </div>
           <div className='right'>
             <div className='day'>
-              {props.user.timestamp.toLocaleString('en', {weekday: 'long'})}
+              {timestamp.toLocaleString('en', {weekday: 'long'})}
             </div>
           </div>
         </div>

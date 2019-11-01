@@ -58,4 +58,22 @@ function ChooseField (props) {
            </Field>
 }
 
-export {TextField,ChooseField}
+function Dropdown (props) {
+    const name = props.name||'...';
+    const [active,setActive] = useState();
+
+    return (
+        <div className='dropdown-container'>
+          <button className='button' onClick={()=>setActive(!active)}>{name}</button>
+          {active && <div className='blinder' onClick={()=>setActive(false)}/>}
+          <div className={'dropdown '+(active&&'active'||'hidden')}>
+
+            {props.children}
+          </div>
+        </div>
+    );
+    
+}
+
+
+export {TextField,ChooseField,Dropdown}
