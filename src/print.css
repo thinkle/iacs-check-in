@@ -1,0 +1,181 @@
+/* Generic */
+
+/* Base badge setup is a fixed grid */
+.badge {
+    display: grid;
+}
+
+/* Rotate date and day */
+.badge .date {
+    box-sizing: border-box;
+    transform: rotateZ(270deg);
+    transform-origin: top left;
+    text-align: center;
+}
+
+.badge .day {
+    box-sizing: border-box;
+    transform: rotateZ(90deg);
+    transform-origin: bottom left;
+    text-align: center;
+}
+
+/* Center the middle of the badge */
+.badge .center {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.badge .name {
+    margin: auto; /* center vertically */
+}
+
+
+/* DEBUG */
+/* .badge > * { */
+/*     border: 2px solid red; */
+/* } */
+
+
+/* Sizes are provided for screen and print separately */
+@media screen {
+    .badge {
+        width: 425px;
+        height: 225px;
+        grid-template-columns: 55px 315px 55px;
+        margin: auto;
+        border-radius: 10px;
+        box-shadow: 3px 3px #888;
+    }
+
+    .badge > div {
+        height: 225px; /* force heights */
+    }
+
+    .badge .date,.badge .day {
+        font-size: 18pt;
+        font-weight: bold;
+        padding-top: 8px;
+    }
+
+    .badge .date {
+        width: 225px;
+        height: 55px;
+        margin-top: 225px;
+    }
+
+    .badge .day {
+        width: 225px;
+        height: 55px;
+        margin-top: -55px;
+    }
+
+    .badge .center {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .badge .role {
+        font-size: 18pt;
+    }
+
+    .badge {
+        font-size: 12pt;
+    }
+
+    .name {
+        font-size: 25pt;
+        font-weight: bold;
+    }
+
+    .role {
+        background-color: black;
+        color: white;
+        font-weight: bold;
+        -webkit-print-color-adjust: exact;        
+    }
+    .time {
+        font-size: 8pt;
+        font-weight: bold;
+    }
+
+}
+
+
+@media print {
+
+    .noprint {
+        display: none;
+    }
+
+    .badge {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 98vh;
+        height: 98vw;
+        box-sizing: border-box;
+        grid-template-columns: 14vh 70vh 14vh;
+        transform: translateY(-98vw)rotateZ(90deg);
+        transform-origin: bottom left;
+        /* https://stackoverflow.com/questions/35856013/rotate-all-html-element-whole-page-90-degree-with-css */
+    }
+
+    .badge > div {
+        height: 98vw;
+    }
+
+
+    .badge .date,.badge .day {
+        font-size: 12vw;
+        font-weight: bold;
+        padding-top: 3vw;
+    }
+
+    .badge .date {
+        width: 98vw;
+        height: 14vh;
+        margin-top: 98vw;
+    }
+
+    .badge .day {
+        width: 98vw;
+        height: 14vh;
+        margin-top: -14vh;
+    }
+
+
+    .badge .center {
+        padding-top: 5vw;
+        padding-bottom: 5vw;
+    }
+
+    .badge .role {
+        font-size: 10vw;
+    }
+    
+    .badge {
+        font-size: 7vw;
+    }
+    
+    .name {
+        font-size: 14vw;
+        font-weight: bold;
+    }
+
+    .time {
+        font-size: 5vw;
+        font-weight: bold;
+    }
+
+    .role {
+        background-color: black;
+        color: white;
+        font-weight: bold;
+        -webkit-print-color-adjust: exact;        
+    }
+
+}
