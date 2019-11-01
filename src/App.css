@@ -1,22 +1,175 @@
+@media print {
+    .App .top {
+        display: none;
+    }
+    .App .print {
+        display: block;
+    }
+}
+
 .App {
-  text-align: center;
+    max-width: 1200px;
+    margin: auto;
+    font-family: Tahoma, Geneva, sans-serif;
+}
+
+.topwrap {
+    top: 0;
+    position: sticky;
+    background-color: white;
+}
+
+.top {
+    border-bottom: 1px solid #777;
+    height: 138px;
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-items: center;
 }
 
 .App-logo {
-  height: 40vmin;
+    margin-left: 15px;
+    width: 186px;
+}
+.centeringPlaceholder{
+    margin-right: 15px;
+    width: 186px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+
+
+.main .exit {
+    display: none;
 }
 
-.App-link {
-  color: #09d3ac;
+.brand {
+    margin-left: 0.8rem;
+    font-size: 4rem;
+}
+
+.top div {
+    display: inline-block;
+}
+.top img {
+    height: 88px;
+}
+
+.button {
+    border-radius: 5px;
+    padding: 2em;
+    font-size: 1rem;
+    display: inline-block;
+    margin: 1em;
+    border: 1px solid #cef;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.button:hover {
+    background-color: #cef;
+    color: black;
+    font-weight: bold;
+}
+
+
+.button.inactive {
+    opacity: 0.5;
+    cursor : not-allowed;
+}
+.button.inactive:hover {
+    background-color : grey;
+    color: white;
+}
+
+.field input {
+    font-size: 16pt;
+    padding: 5px;
+}
+
+.field select {
+    font-size: 16pt;
+    padding: 5px;
+}
+
+.form {
+    display: block;
+    max-width: 1200px;
+}
+
+.formgroup {
+    border: 1px solid #888;
+    padding: 1em;
+    /*width: 400px;*/
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.formgroup h3 {
+    width: 100%;
+}
+
+.formitem:nth-child(0) {
+    margin-top: 0;
+}
+.formitem {
+    margin-top: 12px;
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
+
+
+.form > .button {
+    align-self: start;
+    justify-self: start;
+}
+
+.field {
+    padding: 6px;
+}
+
+.highlight .field {
+    border: 3px solid yellow;
+}
+
+.top .brand {
+    margin: auto;
+}
+
+.top .button {
+    border: none;
+    height: auto;
+    padding: 0;
+    justify-self: flex-end;
+    margin-bottom: 0;
+}
+
+.main .buttons {
+    text-align: center;
+}
+
+.top .buttons {
+    justify-self: flex-end;
+    display: flex;
+}
+
+.top .button:hover {
+    text-decoration: underline;
+    background-color: transparent;
+}
+
+.main {
+    max-width: 120px;
+    min-width: 600px;
+    margin: auto;
+}
+
+.message {
+    margin: auto;
+    border: 1px solid grey;
+    box-shadow: 5px 5px #aaa;
+    padding: 2rem;
 }
