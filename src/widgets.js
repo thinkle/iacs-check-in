@@ -66,7 +66,7 @@ function Dropdown (props) {
         <div className='dropdown-container'>
           <button className='button' onClick={()=>setActive(!active)}>{name}</button>
           {active && <div className='blinder' onClick={()=>setActive(false)}/>}
-          <div className={'dropdown '+(active&&'active'||'hidden')}>
+          <div className={'dropdown '+(active&&'active'||'hidden')} onClick={()=>setActive(false)}>
 
             {props.children}
           </div>

@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import {TextField,ChooseField} from './widgets'
+import fieldsets from './fields.js';
 
 function Checkin (props) {
 
@@ -20,6 +21,9 @@ function Checkin (props) {
     function fp (k, type) {
 
         function validate (v) {
+            if (type=='allcaps') {
+                return v.toUpperCase();
+            }
             if (type=='phone') {
                 var out = ''
                 for (let l of v) {
@@ -31,10 +35,13 @@ function Checkin (props) {
                     return out
                 }
                 else if (out.length <= 7) {
-                    return `${out.substr(0,3)}-${out.substr(3)}`
+                    return `${out.substr(0,3)}-${out.substr(3)}`;
+                }
+                else if (out.length >= 11) {
+                    return `${out.substr(0,1)} (${out.substr(1,3)}) ${out.substr(4,3)}-${out.substr(7,4)} ${out.substr(11)}`;
                 }
                 else if (out.length > 7) {
-                    return `(${out.substr(0,3)}) ${out.substr(3,3)}-${out.substr(6,4)}`
+                    return `(${out.substr(0,3)}) ${out.substr(3,3)}-${out.substr(6)}`;
                 }
             }
             else {
@@ -82,45 +89,23 @@ function Checkin (props) {
 
     return (
         <div className="form">
-          <div className="formgroup">
-            <h3>Info</h3>
-            <TextField {...fp('name')}/>
-            <ChooseField
-              {...fp('role')}
-              options={[
-                  'Volunteer',
-                  'Vendor',
-                  'Visitor',
-                  'Family',
-                  'College Representative',
-                  'Consultant',
-              ]}
-            />
-            <ChooseField
-              {...fp('purpose')}
-              options={[
-                  'Meeting',              
-                  'Consultation',
-                  'Conference',
-                  'Volunteer'
-              ]}
-            />
-          </div>
-
-          <div className="formgroup">
-            <h3>Vehicle</h3>
-            <ChooseField
-              {...fp('make')}
-              options={['Honda','Toyota','GM','Ford','Other']}
-              />
-            <TextField
-              {...fp('model')}
-              />
-            <TextField
-              {...fp('license')}
-            />
-            <TextField {...fp('cell phone','phone')}/>
-          </div>
+          {fieldsets.map(
+              (fieldset)=>(
+                  !fieldset.noEntry &&
+                  <div className='formgroup'>
+                    <h3>{fieldset.title}</h3>
+                    {fieldset.fields.map(
+                        (field)=>(
+                            field.type=='text' &&
+                                <TextField {...fp(field.key,field.validationType)} {...field} />
+                                ||
+                                <ChooseField {...fp(field.key,field.validationType)} {...field} />
+                        )
+                    )
+                    }
+                  </div>)
+          )
+          }
 
           <button  className={'button ' + (isReady&&'active'||'inactive')} onClick={checkIn}>
             Complete Check-In

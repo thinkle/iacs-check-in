@@ -6,14 +6,14 @@ function SheetWriter (
     }
 ) {
     return {
-    write (body,description='') {
-        if (id) {
-            return updateFile(id,{description,body})
+        write (body,description='') {
+            if (id) {
+                return updateFile(id,{description,body})
+            }
+            else {
+                return createFile({title,body,description})
+            }
         }
-        else {
-            return createFile(title,body,description)
-        }
-    }
     }
     
 }
@@ -30,7 +30,8 @@ async function createFile ({title,description,body}) {
                         role : 'foo'
                     }
     }
-    var file = new Blob([body || 'hello?']);
+    var file = new Blob([body || '1,2,3\nA,B,C'],{type:'text/csv'});
+    //var file = new Blob([body || '<html><body><table><tbody><tr><td>1</td><td>2</td></tr><tr><td colspan="2">Hello</td></tr></tbody></table></body></html>'],{type:'text/html'});
     var form = new FormData();
     form.append('metadata',new Blob([JSON.stringify(metadata)],
                                     {type:'application/json'}))

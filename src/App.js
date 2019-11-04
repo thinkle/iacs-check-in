@@ -7,9 +7,143 @@ import Checkout from './checkout.js';
 import PrintScreen from './print.js';
 import UserList from './UserList.js';
 import Google from './gapiLoader.js';
-
+import SheetWriter from './googleSheetWriter.js';
+import fieldsets from './fields.js';
 import {Dropdown} from './widgets.js';
+window._ = _;
 
+function useCheckin (props) {
+
+    var localCopy = window.localStorage.getItem(
+        'users'
+    );
+
+    var googleSheetId = window.localStorage.getItem(
+        'ssid'
+    );
+    
+    if (localCopy) {
+        try {
+            localCopy = JSON.parse(localCopy)
+        }
+        catch (err) {
+            console.log('WARNING: Unable to parse local users',err,localCopy);
+            localCopy = undefined;
+        }
+    }
+    if (!localCopy) {
+        localCopy = [];
+    }
+
+    const [users,_setUsers] = useState(localCopy);
+    const [gapiReady,setGapiReady] = useState(false);
+    const [docUpdated,setDocUpdated] = useState(false);
+    const [error,setError] = useState();
+    const [doc,setDoc] = useState({title:'School Check In Data',id:googleSheetId});
+
+    useEffect( ()=>{
+        function checkGapi () {
+            console.log('checkGapi...');
+            if (!gapiReady) {
+                if (window.gapi) {
+                    console.log('Got gapi...');
+                    if (window.gapi.auth2) {
+                        console.log('Got auth2...');
+                        if (window.gapi.auth2.getAuthInstance() && window.gapi.auth2.getAuthInstance().isSignedIn.get()) {
+                            console.log('Authorized!');
+                            setGapiReady(true);
+                            return;
+                        }
+                    }
+                }
+            }
+            console.log('Check in another half sec...');
+            window.setTimeout(checkGapi,500);
+        }
+        checkGapi();
+    },[]);
+
+    function toCsv (users) {
+        var uu = users.map((u)=>({...u,timestamp: new Date(u.timestamp), out : u.out && new Date(u.out)}));
+        uu = _.orderBy(uu,['out','timestamp'],['desc','desc'])
+        var out = ''
+        fieldsets.forEach(
+                    (fieldSet)=>{
+                        fieldSet.fields.forEach(
+                            (field) => {
+                                out += (field.key[0].toUpperCase() + field.key.substr(1)) + ','
+                            }
+                        )
+                    }
+                );
+        out += '\n' + uu.map(
+            (user)=>{
+                var row = ''
+                fieldsets.forEach(
+                    (fieldSet)=>{
+                        fieldSet.fields.forEach(
+                            (field) => {
+                                if (field.formatValue) {
+                                    row += (field.formatValue(user[field.key])+',');
+                                }
+                                else {
+                                    row += (user[field.key] || "")+','
+                                }
+                            }
+                        )
+                    }
+                );
+                return row;
+            }
+        ).join('\n')
+        return out;
+
+    }
+
+    async function updateDoc (users) {
+        console.log("Let's try updating this baby!")
+        setDocUpdated(false);
+        try {
+            var result = await SheetWriter(doc).write(toCsv(users));
+            setDoc(result);
+            setDocUpdated(true);
+            if (result.id) {
+                console.log('Save ID');
+                window.localStorage.setItem('ssid',result.id);
+            }
+        }
+        catch (err) {
+            setError(err);
+            console.log('Error updating doc',err);
+        }
+    }
+
+
+    function setUsers (users) {
+        window.localStorage.setItem('users',JSON.stringify(users))
+        updateDoc(users);
+        _setUsers(users);
+    }
+
+    return {
+
+        async addUser (user) {setUsers([...users,user])},
+
+        async checkoutUser (user) {
+
+            const newUsers = _.cloneDeep(users)
+            const userObj = _.find(newUsers,['name',user.name]);
+            if (userObj) {
+                userObj.out = new Date();
+                setUsers(newUsers);
+            }
+            else {
+                throw 'No user'
+            }
+        },
+        checkedIn : users.filter((u)=>!u.out),
+    }
+}
 
 function Reprint (props) {
     return <div>
@@ -29,55 +163,11 @@ function CompleteScreen (props) {
 }
 
 
-function useCheckin (props) {
-
-    var localCopy = window.localStorage.getItem(
-        'users'
-    );
-    if (localCopy) {
-        try {
-            localCopy = JSON.parse(localCopy)
-        }
-        catch (err) {
-            console.log('WARNING: Unable to parse local users',err,localCopy);
-            localCopy = undefined;
-        }
-    }
-    if (!localCopy) {
-        localCopy = [];
-    }
-
-    const [users,_setUsers] = useState(localCopy);
-
-    function setUsers (users) {
-        window.localStorage.setItem('users',JSON.stringify(users))
-        _setUsers(users);
-    }
-
-    return {
-
-        async addUser (user) {setUsers([...users,user])},
-
-        async checkoutUser (user) {
-
-            const newUsers = _.cloneDeep(users)
-            const userObj = _.find(newUsers,['name',user.name]);
-            if (userObj) {
-                userObj.out = true;
-                setUsers(newUsers);
-            }
-            else {
-                throw 'No user'
-            }
-        },
-        checkedIn : users.filter((u)=>!u.out),
-    }
-}
 
 function App(props) {
 
     const [mode,setMode] = useState(
-        // 'print'
+         'start'
     )
     const [completeScreenProps,setCompleteScreenProps] = useState({});
     const [checkingInUser,setCheckingInUser] = useState(
@@ -169,9 +259,13 @@ function App(props) {
           <div className="main">
             {!mode && chooser ()
              ||mode=='list' &&
-             <UserList users={checkedIn}/>
+             <div><UserList users={checkedIn}/>
+               <div className="noprint"><button className="button" onClick={()=>window.print()}>Print</button></div>
+             </div>
+             ||mode=='start' &&
+             <Google onReady={()=>setMode('')}/>
              ||mode=='google' &&
-             <Google/>
+             <Google />
              ||mode=='reprint' &&
              <Reprint users={checkedIn}
                       onSelected={reprint}
