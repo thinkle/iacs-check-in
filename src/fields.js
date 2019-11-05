@@ -4,11 +4,14 @@ const fieldsets = [
         fields : [
             {
                 key : 'name',
-                type : 'text'
+                style : {fontWeight:'bold'},
+                type : 'text',
+                validationType:'formal',
             },
             {
                 key : 'role',
                 type : 'choice',
+                style : {fontSize: '0.7rem',fontStyle:'italic',color:'#333'},
                 options : [
                   'Volunteer',
                   'Vendor',
@@ -21,6 +24,7 @@ const fieldsets = [
             {
                 key : 'purpose',
                 type : 'choice',
+                style : {fontSize: '0.7rem',fontStyle:'italic',color:'#333'},
                 options : [
                   'Meeting',              
                   'Consultation',
@@ -98,11 +102,11 @@ const fieldsets = [
      fields : [
          {key:'timestamp',
           parse : (s)=>new Date(s),
-          formatValue : (ts)=>ts.toLocaleTimeString()
+          formatValue : (ts)=>ts.toLocaleTimeString && ts.toLocaleTimeString() || new Date(ts).toLocaleTimeString()
          },
          {key:'out',
           parse : (s)=>new Date(s),
-          formatValue : (isOut)=>!isOut&&'In'||isOut.toLocaleTimeString()
+          formatValue : (isOut)=>!isOut&&'In'||isOut.toLocaleTimeString && isOut.toLocaleTimeString() || new Date(isOut).toLocaleTimeString(),
          }
           
      ],
