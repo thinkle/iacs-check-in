@@ -10,7 +10,7 @@ function UserDetails (props) {
              {myfieldsets.map(
                  (fieldset)=><span className="detailSet">
                  {fieldset.fields.map(
-                     (field)=><><span className={'userDetail '+field.key} style={field.style}>
+                     (field)=><><span className={'userDetail '+field.key} style={field.outStyle}>
                                   {field.formatValue && field.formatValue(props.user[field.key]) || props.user[field.key]}
                                 </span>&nbsp;</>
                  )}
