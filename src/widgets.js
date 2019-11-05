@@ -1,5 +1,5 @@
 import React,{useState,useEffect,useRef} from 'react';
-
+import {inspect} from 'util';
 function Field (props) {
     return (
         <div className={'formitem '+(props.highlight&&'highlight')}>
@@ -79,13 +79,13 @@ function Dropdown (props) {
 function Error (props) {
     const [showDetails,setShowDetails] = useState()
     return (
-          <div>
+          <div className='error'>
             <label onClick={()=>setShowDetails(!showDetails)}>
-              Error
-              <span className="error">{props.name}</span>
+              <span className="errorname">{props.name||'Error'}</span>
             </label>
+            {props.onClear && <button className="button clear" onClick={props.onClear}>&times;</button>}
             <div className={'errorDetails '+(showDetails&&'show'||'hide')}>
-              <pre>{JSON.stringify(props.err)}</pre>
+              <pre>{inspect(props.err)}</pre>
             </div>
           </div>
     );
