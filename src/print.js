@@ -32,12 +32,13 @@ function PrintScreen (props) {
           </div>
         </div>
       </div>
+      {!props.noButtons && 
       <div className='noprint'>
         <div className='buttons'>
           <div className='button' onClick={()=>window.print()}>Print</div>
           <div className='button' onClick={props.onComplete}>Done</div>
         </div>
-      </div>
+      </div>}
     </div> ||
             <div>{JSON.stringify(props.user)}</div>
     )
