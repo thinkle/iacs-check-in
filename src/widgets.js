@@ -59,7 +59,7 @@ function ChooseField (props) {
 }
 
 function Dropdown (props) {
-    const name = props.name||'...';
+    const name = props.name||'☰';
     const [active,setActive] = useState();
 
     return (
@@ -76,4 +76,19 @@ function Dropdown (props) {
 }
 
 
-export {TextField,ChooseField,Dropdown}
+function Error (props) {
+    const [showDetails,setShowDetails] = useState()
+    return (
+          <div>
+            <label onClick={()=>setShowDetails(!showDetails)}>
+              Error
+              <span className="error">{props.name}</span>
+            </label>
+            <div className={'errorDetails '+(showDetails&&'show'||'hide')}>
+              <pre>{JSON.stringify(props.err)}</pre>
+            </div>
+          </div>
+    );
+}
+
+export {TextField,ChooseField,Dropdown,Error}
