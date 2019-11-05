@@ -1,14 +1,5 @@
-@media print {
-    .App .top {
-        display: none;
-    }
-    .App .print {
-        display: block;
-    }
-}
-
 .App {
-    max-width: 1200px;
+    /*max-width: 1200px;*/
     margin: auto;
     font-family: Tahoma, Geneva, sans-serif;
 }
@@ -16,6 +7,7 @@
 .topwrap {
     top: 0;
     position: sticky;
+    z-index: 10;
     background-color: white;
 }
 
@@ -35,7 +27,12 @@
 }
 .centeringPlaceholder{
     margin-right: 15px;
+    text-align: right;
     width: 186px;
+}
+
+.user.button {
+    margin-bottom: 0.75rem;
 }
 
 .dropdown-container {
@@ -45,14 +42,16 @@
 .dropdown {
     position: absolute;
     top: 45px;
-    left: 0px;
+    right: 0px;
     overflow: hidden;
+    z-index: 10;
 }
 
 .top .dropdown .button {
-    border: 1px solid #34343488;
+    border: none;
+    border-bottom: 1px solid #efefef;
     margin-top: 0px;
-    padding: 5px;
+    padding: 15px;
     width: 160px;
     border-radius: 0;
     background-color: white;
@@ -95,25 +94,25 @@
 
 .button {
     border-radius: 5px;
-    padding: 2em;
-    font-size: 1rem;
+    padding: 0.7rem;
+    font-size: 2rem;
     display: inline-block;
-    margin: 1em;
-    border: 1px solid #cef;
+    /*margin: 1em;*/
+    border: 1px solid #0033a0;
+    background-color: #fff;
     cursor: pointer;
     -webkit-appearance: none;
     -moz-appearance: none;
 }
 
 .button:hover {
-    background-color: #cef;
-    color: black;
-    font-weight: bold;
+    background-color: #0033a0;
+    color: white;
 }
-
 
 .button.inactive {
     opacity: 0.5;
+    background-color: #cfcfcf;
     cursor : not-allowed;
 }
 .button.inactive:hover {
@@ -122,18 +121,13 @@
 }
 
 .field input {
-    font-size: 16pt;
+    font-size: 2rem;
     padding: 5px;
 }
 
 .field select {
-    font-size: 16pt;
+    font-size: 2rem;
     padding: 5px;
-}
-
-.form {
-    display: block;
-    max-width: 1200px;
 }
 
 .formgroup {
@@ -158,7 +152,6 @@
 }
 
 
-
 .form > .button {
     align-self: start;
     justify-self: start;
@@ -176,16 +169,42 @@
     margin: auto;
 }
 
+.main .buttons {
+    margin-top: 0.5rem;
+    display: flex;
+}
+
+.buttons .button {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.buttons .button:nth-child(1) {
+    margin-left: auto;
+}
+
+.buttons .button:last-child {
+    margin-right: auto;
+}
+
+.buttons .button.right {
+    margin-right: 0;
+    margin-left: auto;
+}
+
+
+.main > .button {
+    margin-top: 0.5rem;
+}
+
 .top .button {
+    font-size: 1rem;
     border: none;
+    background-color: transparent;
     height: auto;
     padding: 0;
     justify-self: flex-end;
     margin-bottom: 0;
-}
-
-.main .buttons {
-    text-align: center;
 }
 
 .top .buttons {
@@ -196,12 +215,21 @@
 .top .button:hover {
     text-decoration: underline;
     background-color: white;
+    color: black;
 }
 
 .main {
-    max-width: 120px;
-    min-width: 600px;
+    min-width: 360px;
     margin: auto;
+}
+
+.main > div {
+    margin: auto;
+    max-width: 800px;
+}
+
+.main > div.form {
+    max-width: 1200px;
 }
 
 .blinder {
@@ -218,4 +246,40 @@
     border: 1px solid grey;
     box-shadow: 5px 5px #aaa;
     padding: 2rem;
+}
+
+.busy {
+    color: #232323;
+    font-style: italic;
+    cursor: progress;
+}
+
+.main {
+    margin-bottom: 42px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    height: 34px;
+    font-size: 17px;
+    background-color: white;
+    border-top: 2px solid #cfcfcf;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media print {
+    .App .top {
+        display: none;
+    }
+    .App .print {
+        display: block;
+    }
+
+    .footer {
+        display: none;
+    }
 }
