@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import {ChooseField} from './widgets';
-
+import PrintScreen from './print.js';
 function Checkout (props) {
     
     const [user,setUser] = useState();
@@ -8,13 +8,16 @@ function Checkout (props) {
     return (
             <div>
             <ChooseField
-        label='Name'
+              label='Name'
+              value={user}
         onChange={(v) => setUser(v)}
         onCommit={()=>{}}
         options={props.checkedIn.map((data)=>({value:data,text:data.name}))}
             />
-            <h3>{user && user.name}</h3>
-            <button className='button' onClick={()=>props.onCheckOut(user)}>Check Out</button>
+              {user && <PrintScreen noButtons={true} user={user}/>}
+              <div className='buttons'>
+                <button className='button' onClick={()=>props.onCheckOut(user)}>Check Out</button>
+              </div>
             </div>
     );
 }
