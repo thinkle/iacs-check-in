@@ -4,14 +4,14 @@ const fieldsets = [
         fields : [
             {
                 key : 'name',
-                style : {fontWeight:'bold'},
+                outStyle : {fontWeight:'bold'},
                 type : 'text',
                 validationType:'formal',
             },
             {
                 key : 'role',
                 type : 'choice',
-                style : {fontSize: '0.7rem',fontStyle:'italic',color:'#333'},
+                outStyle : {fontSize: '0.7rem',fontStyle:'italic',color:'#333'},
                 options : [
                   'Volunteer',
                   'Vendor',
@@ -24,7 +24,7 @@ const fieldsets = [
             {
                 key : 'purpose',
                 type : 'choice',
-                style : {fontSize: '0.7rem',fontStyle:'italic',color:'#333'},
+                outStyle : {fontSize: '0.7rem',fontStyle:'italic',color:'#333'},
                 options : [
                   'Meeting',              
                   'Consultation',
