@@ -6,6 +6,15 @@ function SheetWriter (
     }
 ) {
     return {
+
+        getUrl () {
+            if (!id) {
+                return ''
+            }
+            else {
+                return `https://docs.google.com/spreadsheets/d/${id}/edit#`
+            }
+        },
         write (body,description='') {
             if (id) {
                 return updateFile(id,{description,body})
