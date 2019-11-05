@@ -106,14 +106,11 @@ function Checkin (props) {
                   </div>)
           )
           }
-
-          <button  className={'button ' + (isReady&&'active'||'inactive')} onClick={checkIn}>
+          <div className="buttons">
+          <button  className={'right button ' + (isReady&&'active'||'inactive')} onClick={checkIn}>
             Complete Check-In
           </button>
-          
-          <pre>
-            {JSON.stringify(checkInfo)}
-          </pre>
+          </div>
         </div>
     );
 
