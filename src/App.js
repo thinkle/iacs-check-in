@@ -40,6 +40,16 @@ function useCheckin (props) {
     const [error,setError] = useState();
     const [doc,setDoc] = useState({title:'School Check In Data',id:googleSheetId,url:SheetWriter({id:googleSheetId}).getUrl()});
 
+    // if (!error) {
+    // try {
+    //     const duck = 2 + 'hello' * 7.23;
+    //     duck = duck + 3
+    // }
+    //     catch (err) {
+    //         console.log('TEST ERROR',err);
+    //         setError(err);
+    // }}
+
     useEffect( ()=>{
         function checkGapi () {
             console.log('checkGapi...');
@@ -62,9 +72,18 @@ function useCheckin (props) {
         checkGapi();
     },[]);
 
-    function toCsv (users) {
+    function sortUsers (users) {
+        const today = new Date();
         var uu = users.map((u)=>({...u,timestamp: new Date(u.timestamp), out : u.out && new Date(u.out)}));
         uu = _.orderBy(uu,['out','timestamp'],['desc','desc'])
+        uu = uu.filter(
+            (u)=>(u.timestamp.getDay()==today.getDay())
+        );
+        return uu;
+    }
+
+    function toCsv (users) {
+        const uu = sortUsers(users);
         var out = ''
         fieldsets.forEach(
                     (fieldSet)=>{
@@ -119,6 +138,7 @@ function useCheckin (props) {
 
 
     function setUsers (users) {
+        users = sortUsers(users);
         window.localStorage.setItem('users',JSON.stringify(users))
         updateDoc(users);
         _setUsers(users);
@@ -127,6 +147,10 @@ function useCheckin (props) {
     return {
 
         async addUser (user) {setUsers([...users,user])},
+
+        clearError () {
+            setError();
+        },
 
         async checkoutUser (user) {
 
@@ -141,6 +165,7 @@ function useCheckin (props) {
             }
         },
         checkedIn : users.filter((u)=>!u.out),
+        users,
         doc,
         error,
         docUpdated,
@@ -179,9 +204,9 @@ function App(props) {
         //  purpose:'Test Purpose'
         // }
     );
-    const {checkedIn,
+    const {checkedIn,users,
            addUser,doc,docUpdated,error,
-           checkoutUser,
+           checkoutUser,clearError,
           } = useCheckin(props);
 
 
@@ -242,6 +267,12 @@ function App(props) {
                     </button>
                     <button
                       className='button'
+                      onClick={()=>setMode('details')}
+                    >
+                      Visitor Details
+                    </button>
+                    <button
+                      className='button'
                       onClick={()=>setMode('google')}
                     >
                       Set up google link
@@ -261,8 +292,14 @@ function App(props) {
           <div className="main">
             {!mode && chooser ()
              ||mode=='list' &&
-             <div><h2>Visitors</h2><UserList users={checkedIn}/>
+             <div><h2>Visitors</h2>
+               <UserList users={checkedIn}/>
                <div className="noprint"><div className='buttons'><button className="button right" onClick={()=>window.print()}>Print</button></div></div>
+             </div>
+             ||mode=='details' &&
+             <div>
+               <h2>Today's Visitors: All Details</h2>
+               <UserList users={users} fieldsets={['Info','Vehicle','Checkin Data']}/>
              </div>
              ||mode=='start' &&
              <Google onReady={()=>setMode('')}/>
@@ -288,7 +325,7 @@ function App(props) {
           <div className='footer'>
             <a target="_blank" href={doc.url}>Google Sheet w/ Sign In Info</a>
             {docUpdated && '✓' || <span className="busy">Updating document...</span>}
-            {error && <Error err={error} name='Syncing error'/>}
+            {error && <Error err={error} name='Syncing error' onClear={clearError}/>}
           </div>
         </div>
     );
