@@ -2,6 +2,15 @@ import React,{useState,useEffect} from 'react';
 import {TextField,ChooseField} from './widgets'
 import fieldsets from './fields.js';
 
+function capitalize (w) {
+    if (w) {
+        return w[0].toUpperCase() + w.substr(1);
+    }
+    else {
+        return w;
+    }
+}
+
 function Checkin (props) {
 
     const [checkInfo,setCheckInfo] = useState({});
@@ -23,6 +32,9 @@ function Checkin (props) {
         function validate (v) {
             if (type=='allcaps') {
                 return v.toUpperCase();
+            }
+            if (type=='formal') {
+                return v.split(' ').map(capitalize).join(' ');
             }
             if (type=='phone') {
                 var out = ''
@@ -56,7 +68,7 @@ function Checkin (props) {
                 setKey(k,v);
             },
             onCommit : ()=>updateForm(),
-            label : k[0].toUpperCase() + k.substr(1),
+            label : capitalize(k),
             highlight : k==nextUp
         }
     }
