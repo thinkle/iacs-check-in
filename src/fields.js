@@ -28,11 +28,11 @@ const fieldsets = [
                   'Volunteer'
                 ]
             },
-            {
-                type : 'text',
-                key: 'phone',
-                validationType : 'phone',
-            },
+            // {
+            //     type : 'text',
+            //     key: 'phone',
+            //     validationType : 'phone',
+            // },
         ],
     },
     {title : 'Vehicle',
