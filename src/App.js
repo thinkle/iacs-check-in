@@ -9,8 +9,7 @@ import UserList from './UserList.js';
 import Google from './gapiLoader.js';
 import SheetWriter from './googleSheetWriter.js';
 import fieldsets from './fields.js';
-import {Dropdown} from './widgets.js';
-window._ = _;
+import {Dropdown,Error} from './widgets.js';
 
 function useCheckin (props) {
 
@@ -37,9 +36,9 @@ function useCheckin (props) {
 
     const [users,_setUsers] = useState(localCopy);
     const [gapiReady,setGapiReady] = useState(false);
-    const [docUpdated,setDocUpdated] = useState(false);
+    const [docUpdated,setDocUpdated] = useState(true);
     const [error,setError] = useState();
-    const [doc,setDoc] = useState({title:'School Check In Data',id:googleSheetId});
+    const [doc,setDoc] = useState({title:'School Check In Data',id:googleSheetId,url:SheetWriter({id:googleSheetId}).getUrl()});
 
     useEffect( ()=>{
         function checkGapi () {
@@ -142,6 +141,9 @@ function useCheckin (props) {
             }
         },
         checkedIn : users.filter((u)=>!u.out),
+        doc,
+        error,
+        docUpdated,
     }
 }
 
@@ -178,7 +180,7 @@ function App(props) {
         // }
     );
     const {checkedIn,
-           addUser,
+           addUser,doc,docUpdated,error,
            checkoutUser,
           } = useCheckin(props);
 
@@ -259,8 +261,8 @@ function App(props) {
           <div className="main">
             {!mode && chooser ()
              ||mode=='list' &&
-             <div><UserList users={checkedIn}/>
-               <div className="noprint"><button className="button" onClick={()=>window.print()}>Print</button></div>
+             <div><h2>Visitors</h2><UserList users={checkedIn}/>
+               <div className="noprint"><div className='buttons'><button className="button right" onClick={()=>window.print()}>Print</button></div></div>
              </div>
              ||mode=='start' &&
              <Google onReady={()=>setMode('')}/>
@@ -283,6 +285,11 @@ function App(props) {
              </div>
             </CompleteScreen>}
           </div>
+          <div className='footer'>
+            <a target="_blank" href={doc.url}>Google Sheet w/ Sign In Info</a>
+            {docUpdated && '✓' || <span className="busy">Updating document...</span>}
+            {error && <Error err={error} name='Syncing error'/>}
+          </div>
         </div>
     );
 
@@ -290,7 +297,7 @@ function App(props) {
         return <div className='buttons'>
           <a className="button" onClick={()=>setMode('checkin')}>Check In</a>
           <a className="button" onClick={()=>setMode('checkout')}>Check Out</a>
-          <a className="button exit" onClick={()=>setMode()}>Exit</a>
+          {mode && <a className="button exit" onClick={()=>setMode()}>Exit</a>}
         </div>
     }
 
