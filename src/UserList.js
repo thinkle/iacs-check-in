@@ -16,7 +16,6 @@ function User (props) {
 function UserList (props) {
     return (
             <div>
-              <h2>Visitors</h2>
               {props.users.map(
                   (u)=><User user={u} menu={!!props.onSelected} onClick={()=>props.onSelected(u)}/>
               )}
