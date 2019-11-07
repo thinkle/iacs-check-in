@@ -13,11 +13,11 @@ const fieldsets = [
                 type : 'choice',
                 outStyle : {fontSize: '0.7rem',fontStyle:'italic',color:'#333'},
                 options : [
-                  'Volunteer',
-                  'Vendor',
-                  'Visitor',
-                  'Family',
-                  'College Representative',
+                    'Volunteer',
+                    'Family',
+                    'Vendor',
+                    'Visitor',
+                    'College Representative',
                     'Consultant',
                     'Substitute',
               ]
@@ -27,10 +27,11 @@ const fieldsets = [
                 type : 'choice',
                 outStyle : {fontSize: '0.7rem',fontStyle:'italic',color:'#333'},
                 options : [
-                  'Meeting',              
-                  'Consultation',
-                  'Conference',
-                  'Volunteer'
+                    'Meeting',              
+                    'Consultation',
+                    'Conference',
+                    'Volunteer',
+                    'Substitute',
                 ]
             },
             // {
