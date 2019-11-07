@@ -18,7 +18,8 @@ const fieldsets = [
                   'Visitor',
                   'Family',
                   'College Representative',
-                  'Consultant',
+                    'Consultant',
+                    'Substitute',
               ]
             },
             {
