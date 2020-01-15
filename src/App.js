@@ -155,7 +155,7 @@ function useCheckin (props) {
         async checkoutUser (user) {
 
             const newUsers = _.cloneDeep(users)
-            const userObj = _.find(newUsers,['name',user.name]);
+            const userObj = _.find(newUsers,['first',user.first,'last',user.last]);
             if (userObj) {
                 userObj.out = new Date();
                 setUsers(newUsers);
@@ -216,7 +216,7 @@ function App(props) {
             .then(
                 ()=>{
                     setCompleteScreenProps({
-                        title:`Checked Out ${user.name}`,
+                        title:`Checked Out ${user.first} ${user.last}`,
                         message:'Thanks for checking out!'
                     }
                     );
@@ -227,7 +227,7 @@ function App(props) {
 
     function handlePrintingComplete () {
         setCompleteScreenProps({
-            title : `Checked In ${checkingInUser.name}`,
+            title : `Checked In ${checkingInUser.first} ${checkingInUser.last}`,
             message : 'Thank you for checking in and printing your name pass! Please come back to this computer to check out when you are done.'
         });
         setCheckingInUser();

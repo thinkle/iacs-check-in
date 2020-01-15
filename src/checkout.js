@@ -12,7 +12,7 @@ function Checkout (props) {
               value={user}
         onChange={(v) => setUser(v)}
         onCommit={()=>{}}
-        options={props.checkedIn.map((data)=>({value:data,text:data.name}))}
+              options={props.checkedIn.map((data)=>({value:data,text:`${data.first} ${data.last}`}))}
             />
               {user && <PrintScreen noButtons={true} user={user}/>}
               <div className='buttons'>

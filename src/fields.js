@@ -3,11 +3,23 @@ const fieldsets = [
         title : 'Info',
         fields : [
             {
-                key : 'name',
+                key : 'first',
                 outStyle : {fontWeight:'bold'},
-                type : 'text',
+                type:'text',
                 validationType:'formal',
             },
+            {
+                key : 'last',
+                outStyle : {fontWeight: 'bold'},
+                type:'text',
+                validationType:'formal'
+            },
+            // {
+            //     key : 'name',
+            //     outStyle : {fontWeight:'bold'},
+            //     type : 'text',
+            //     validationType:'formal',
+            // },
             {
                 key : 'role',
                 type : 'choice',
@@ -115,4 +127,12 @@ const fieldsets = [
     },
 ]
 
+const required = [
+    'first',
+    'last',
+    'role',
+    'purpose'
+];
+
 export default fieldsets;
+export {required}

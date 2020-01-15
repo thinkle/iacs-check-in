@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import {TextField,ChooseField} from './widgets'
-import fieldsets from './fields.js';
+import fieldsets,{required} from './fields.js';
 
 function capitalize (w) {
     if (w) {
@@ -16,7 +16,6 @@ function Checkin (props) {
     const [checkInfo,setCheckInfo] = useState({});
     const [nextUp,setNextUp] = useState('');
     const [isReady,setIsReady] = useState(false);
-    const required = ['name','role','purpose'];
 
     useEffect(()=>updateForm(),[])
     

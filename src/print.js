@@ -21,7 +21,7 @@ function PrintScreen (props) {
           </div>
           <div className='center'>
             <div className='role'>{props.user.role}</div>
-            <div className='name'>{props.user.name}</div>
+            <div className='name'>{props.user.first||props.user.name} {props.user.last||''}</div>
             <div className='purpose'>{props.user.purpose}</div>
             <div className='time'>{timestamp.toLocaleTimeString()}</div>
           </div>
